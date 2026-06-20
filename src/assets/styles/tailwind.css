@@ -41,6 +41,93 @@
   }
 }
 
+@theme {
+  /* 1. 全局微调 Markdown 默认的各个字号和行高变量 */
+  --typography-spacing-sm: 0.5rem;
+  --typography-spacing-base: 0.75rem;
+
+  /* 2. 覆盖默认的 prose 颜色变量 */
+  --color-prose-body: var(--aw-color-text-default);
+  --color-prose-headings: var(--aw-color-text-default);
+  --color-prose-links: var(--aw-color-primary);
+  --color-prose-bold: var(--aw-color-text-default);
+}
+
+/* 3. 使用 CSS 原生样式或 @utility 对文章细节做精致化升级 */
+.prose {
+  /* 链接美化：加下划线，悬浮变成次级主色 */
+  & a {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: color 0.2s ease;
+    &:hover {
+      color: var(--aw-color-secondary);
+    }
+  }
+
+  /* 引用块（blockquote）精致化设计 */
+  & blockquote {
+    font-style: normal;
+    font-weight: 400;
+    border-left: 4px solid var(--aw-color-primary);
+    background-color: #f8fafc; /* light 模式淡蓝灰底 */
+    padding: 1rem 1.25rem;
+    border-radius: 0.375rem;
+    color: var(--aw-color-text-muted);
+    
+    /* 去掉默认自带的左右双引号（过时设计） */
+    & p::before, & p::after {
+      content: none !important;
+    }
+  }
+
+  /* 行内代码（Inline Code）小气泡效果 */
+  & :not(pre) > code {
+    background-color: #f1f5f9; /* slate-100 */
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    font-weight: 500;
+    color: #0f172a; /* slate-900 */
+    
+    &::before, &::after {
+      content: "" !important;
+    }
+  }
+
+  /* 大标题（H2, H3）高级装饰：左侧彩色线条 */
+  & h2 {
+    position: relative;
+    padding-left: 0.85rem;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 25%;
+      height: 50%;
+      width: 4px;
+      background: linear-gradient(to bottom, var(--aw-color-primary), var(--aw-color-accent, #8b5cf6));
+      border-radius: 2px;
+    }
+  }
+}
+
+/* 4. 适配你的暗黑模式 (使用你配置好的 @variant dark) */
+@variant dark {
+  .prose {
+    & blockquote {
+      background-color: #1e293b; /* dark 模式 slate-800 */
+      color: #94a3b8; /* slate-400 */
+    }
+
+    & :not(pre) > code {
+      background-color: #1e293b; /* dark 模式 slate-800 */
+      color: #f1f5f9; /* slate-100 */
+    }
+  }
+}
+
 @utility bg-page {
   background-color: var(--aw-color-bg-page);
 }
